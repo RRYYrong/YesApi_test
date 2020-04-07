@@ -1,0 +1,299 @@
+
+#验证正常登陆，有效用户名和密码，成功登录
+-
+  url: http://hn216.api.yesapi.cn/
+  method: post
+  #请求数据
+  data:
+    s: App.User.Login
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: haha
+    password: '12345'
+   #返回结果验证，断言
+  status_code: 200   #断言请求状态码为200
+  check:
+    - ret=200
+    - err_code=0
+    - "err_msg="
+  #添加用例描述
+  doc: 01_验证必填参数正确输入，成功登录
+
+
+# 验证所有必填和非必填参数正确输入，成功登录
+-
+  url: http://hn216.api.yesapi.cn/  # url地址
+  method: get #请求方式
+  # 登录需要输入的数据，其中is_allow_many和client为非必填
+  data:
+    s: App.User.Login  # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: haha
+    password: '12345'
+    is_allow_many: true
+    client: 198737sds
+  # 断言是否包含以下内容
+  status_code : 200
+  check:
+    - ret=200
+    - err_code=0
+    - 'err_msg='
+  #添加用例描述
+  doc: 02_验证必填和非必填参数正确输入，成功登录
+
+#验证密码与账号不匹配，登录失败
+-
+  url: http://hn216.api.yesapi.cn/  #url地址
+  method: post
+  data:
+    s: App.User.Login   # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: haha
+    password: "1234567"  #输入错误密码1234567，正确密码是123456
+
+    # 断言
+  status_code: 200   #断言请求状态码为200
+  check:
+    - ret=200
+    - err_code=2
+    - "err_msg=登录失败，密码错误"
+  #添加用例描述
+  doc: 03_验证密码与账号不匹配，登录失败
+
+
+  # 验证用户名为空，登录失败
+-
+  url: http://hn216.api.yesapi.cn/  # url地址
+  method: post #请求方式
+  data:
+    s: App.User.Login  # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username:
+    password: '12345'
+  # 断言
+  status_code : 200
+  check:
+    - 'ret=400'
+    - 'data={}'
+    - 'msg=客户端非法请求：缺少必要参数username'
+  #添加用例描述
+  doc: 04_验证用户名为空，登录失败
+
+  # 验证密码为空，登录失败
+-
+  url: http://hn216.api.yesapi.cn/  # url地址
+  method: post #请求方式
+
+  #登录需要输入的数据
+  data:
+    s: App.User.Login  # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: haha
+    password: ""
+  # 断言
+  status_code : 200
+  check:
+    - 'ret=200'
+    - 'err_code=2'
+    - 'err_msg=登录失败，密码错误'
+  #添加用例描述
+  doc: 05_验证密码为空，登录失败
+
+  #验证用户名输入51位，登录失败
+-
+  url: http://hn216.api.yesapi.cn/  # url地址
+  method: post #请求方式
+  data:
+    s: App.User.Login  # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: 123456789012345678901234567890123456789012345678951
+    password: '12345'
+  # 断言
+  status_code : 200
+  check:
+    - 'ret=400'
+    - 'data={}'
+    - 'msg=客户端非法请求：username.len应该小于等于50, 但现在username.len = 51'
+  #添加用例描述
+  doc: 06_验证用户名输入51位，登录失败
+
+#验证用户名输入50位，成功登录
+-
+  url: http://hn216.api.yesapi.cn/
+  method: post
+  #请求数据
+  data:
+    s: App.User.Login
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: qwertyuiop123456789012345678901234567890asdfghjklm
+    password: '123456'
+
+  #返回结果验证，断言
+  status_code: 200   #断言请求状态码为200
+  check:
+    - ret=200
+    - err_code=0
+    - "err_msg="
+  #添加用例描述
+  doc: 7_验证用户名50位，登录成功
+
+
+#验证app_key错误，登录失败
+-
+  url: http://hn216.api.yesapi.cn/
+  method: post
+  #请求数据
+  data:
+    s: App.User.Login
+    app_key: B5DBBD48E7D0F2F866FDB69C550D36CW
+    username: haha
+    password: '12345'
+
+  #返回结果验证，断言
+  status_code: 200   #断言请求状态码为200
+  check:
+    - ret=406
+    - data={}
+    - "msg=客户端非法请求：非法app_key，请核对你所在的接口域名（a.yesapi.cn\\/3eir71）"
+  #添加用例描述
+  doc: 8_验证app_key错误，登录失败
+
+
+#验证app_key不是32位时，登录失败
+-
+  url: http://hn216.api.yesapi.cn/
+  method: post
+  #请求数据
+  data:
+    s: App.User.Login
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3dsfd
+    username: haha
+    password: '12345'
+
+  #返回结果验证，断言
+  status_code: 200   #断言请求状态码为200
+  check:
+    - ret=400
+    - data={}
+    - "msg=客户端非法请求：app_key.len应该小于等于32, 但现在app_key.len = 33"
+  #添加用例描述
+  doc: 9_验证app_key不是32位时，登录失败
+
+
+#验证url地址错误，登录失败
+-
+  url: http://hn216.api.yesapi.cn/
+  method: post
+  #请求数据
+  data:
+    s: app.User.Login
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3dsfd
+    username: haha
+    password: '12345'
+
+  #返回结果验证，断言
+  status_code: 200   #断言请求状态码为200
+  check:
+    - ret=404
+    - data={}
+    - "msg=客户端非法请求：接口服务app.user.login不存在"
+  #添加用例描述
+  doc: 10_验证url地址错误，登录失败
+
+#验证非必填参数client输入错误32位时，登录失败
+-
+  url: http://hn216.api.yesapi.cn/
+  method: post
+  #请求数据
+  data:
+    s: App.User.Login
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3dsfd
+    username: haha
+    password: '12345'
+    client: "大于30个字符时登录失败"
+
+  #返回结果验证，断言
+  status_code: 200   #断言请求状态码为200
+  check:
+    - ret=400
+    - data={}
+    - "msg=客户端非法请求：app_key.len应该小于等于32, 但现在app_key.len = 33"
+  #添加用例描述
+  doc: 11_验证非必填参数client输入32位时，登录失败
+
+
+#验证非必填参数is_allow_many非法输入，登录失败
+-
+  url: http://hn216.api.yesapi.cn/  # url地址
+  method: post #请求方式
+  # 登录需要输入的数据，其中is_allow_many和client为非必填
+  data:
+    s: App.User.Login  # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: haha
+    password: '12345'
+    is_allow_many: hello
+    client: 2020.04.05-登录
+  # 断言是否包含以下内容
+  status_code : 200
+  check:
+    - ret=400
+    - data={}
+    - 'msg=客户端非法请求：is_allow_many非法输入，只能输入true和false'
+  #添加用例描述
+  doc: 12_验证is_allow_many非法输入，登录失败，实际与预期不符bug
+
+#验证密码小于32位，输入31位时，登陆失败
+-
+  url: http://hn216.api.yesapi.cn/  #url地址
+  method: post
+  data:
+    s: App.User.Login   # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: haha
+    password: 827ccb0eea8a706c4c34a16891f84e7 #密码为31位
+
+  # 断言
+  status_code: 200
+  check:
+    - ret=400
+    - data={}
+    - 'msg=客户端非法请求：password.len应该大于或等于32, 但现在password.len = 31'
+  doc: 13_验证密码小于32位，输入31位时，登陆失败
+
+#验证密码大于32位，输入33位时，登陆失败
+-
+  url: http://hn216.api.yesapi.cn/  #url地址
+  method: get
+  data:
+    s: App.User.Login   # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: haha
+    password: "827ccb0eea8a706c4c34a16891f84e733"  #密码为33位
+
+  # 断言
+  status_code: 200
+  check:
+    - ret=400
+    - data={}
+    - 'msg=客户端非法请求：password.len应该小于等于32, 但现在password.len = 33'
+  #添加用例描述
+  doc: 14_验证密码大于32位，输入33位时，登陆失败
+
+#验证密码未加密，登陆失败
+-
+  url: http://hn216.api.yesapi.cn/  #url地址
+  method: post
+  data:
+    s: App.User.Login   # 登录接口地址
+    app_key: B5DBBD48E7D0F2F866FDB69C550D3632
+    username: 伊利2号
+    password: "123456"
+
+  # 断言
+  status_code: 200
+  check:
+    - ret=400
+    - data={}
+    - 'msg=客户端非法请求：password.len应该大于或等于32, 但现在password.len = 6'
+  #添加用例描述
+  doc: 15_验证密码未加密，登录失败
