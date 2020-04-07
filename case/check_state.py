@@ -10,6 +10,10 @@ from lib.util import *
 from setting import *
 @ddt.ddt
 class CheckState(unittest.TestCase):
+    '''
+    检测登录态接口
+    :return:
+    '''
     @ddt.file_data(os.path.join(DATA_PATH,'check_state.yaml'))
     def test_check_state(self,**case):
         url = case.get('url')

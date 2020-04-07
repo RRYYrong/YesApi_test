@@ -13,6 +13,10 @@ import os
 import ddt
 @ddt.ddt
 class Change_group_admin(unittest.TestCase):
+    '''
+    修改会员分组（管理员用）
+    :return:
+    '''
     @ddt.file_data(os.path.join(QSJ_DATA_PATH,'change_group_admin.yaml'))
     def test_change_group_admin(self,**case):
         url = case.get('url')

@@ -15,12 +15,13 @@ import random
 
 @ddt.ddt
 class QuitLogin(unittest.TestCase):
+    '''
+    退出登录
+    :return:
+    '''
     @ddt.file_data(os.path.join(DATA_PATH,'quit_login.yaml'))
     def test_qiut_login(self,**case):
-        '''
-        退出登录
-        :return:
-        '''
+
         #获取参数
         H = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' #所有任意字符
         app_key = case.get('app_key')

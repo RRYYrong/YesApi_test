@@ -10,6 +10,10 @@ from lib.util import *
 from setting import *
 @ddt.ddt
 class GetUserLongList(unittest.TestCase):
+    '''
+    极速获取用户长列表
+    :return:
+    '''
     @ddt.file_data(os.path.join(DATA_PATH,'get_user_longlist.yaml'))
     def test_get_user_longlist(self,**case):
         methods = case.get('methods')

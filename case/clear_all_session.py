@@ -15,12 +15,13 @@ import random
 
 @ddt.ddt
 class ClearSession(unittest.TestCase):
+    '''
+    清空登录会话
+    :return:
+    '''
     @ddt.file_data(os.path.join(DATA_PATH,'clear_all_session.yaml'))
     def test_qiut_login(self,**case):
-        '''
-        退出登录
-        :return:
-        '''
+
         #获取参数
         H = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' #所有任意字符
         app_key = case.get('app_key')
