@@ -5,7 +5,7 @@
 @time: 2020/4/3 12:28
 @desc:
 '''
-import unittest,requests,ddt
+import unittest,requests,ddt,json
 from lib.util import *
 from setting import *
 @ddt.ddt
@@ -49,5 +49,14 @@ class GetUserLongList(unittest.TestCase):
         else:
             for c in check:
                 self.assertIn(c,results)
+        # res = r.json()
+        # for key in check: #循环取出断言数据
+        #     if key == 'data': #当断言数据时data字段时
+        #         for k in check.get('key'): #循环取出data字段中的每个字段
+        #             self.assertIn(res['data'][k],check[key][k]) #将实际结果与预期结果中data中的相同字段做对比
+        #     else:
+        #         self.assertEqual(r.status_code,check.get(key))#对比状态码
+        #         self.assertEqual(res.get(key),check.get(key))#对比ret字段
+
 if __name__ == '__main__':
     unittest.main()
